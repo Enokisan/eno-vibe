@@ -56,35 +56,6 @@ npm run build
 npm run preview
 ```
 
-## 🚀 デプロイ
-
-### Vercelへのデプロイ
-
-#### 手動デプロイ
-1. [Vercel](https://vercel.com)にログイン
-2. リポジトリを接続
-3. 設定は自動検出されます
-
-#### GitHub Actions自動デプロイ
-
-リポジトリの Settings > Secrets で以下を設定:
-
-- `VERCEL_TOKEN`: Vercel ダッシュボードから取得
-- `VERCEL_ORG_ID`: Vercel CLIまたはプロジェクト設定から取得  
-- `VERCEL_PROJECT_ID`: Vercel CLIまたはプロジェクト設定から取得
-
-mainブランチにプッシュすると自動デプロイされます。
-
-### Vercel トークン取得方法
-
-1. [Vercel Dashboard](https://vercel.com/account/tokens) でアクセストークンを作成
-2. プロジェクトディレクトリで以下を実行:
-```bash
-npx vercel login
-npx vercel link
-npx vercel env pull .env.local
-```
-
 ## 🎨 カスタマイズ
 
 ### 新しい選択肢を追加
@@ -127,10 +98,6 @@ categories: [
 ## 📄 ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。
-
-## 👨‍💻 作者
-
-**ENOさん** - [eno-codes](https://github.com/enoki)
 
 ---
 
