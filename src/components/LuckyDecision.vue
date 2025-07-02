@@ -19,12 +19,23 @@
 
     <div v-if="selectedCategory" class="decision-area">
       <div v-if="selectedCategory.id === 'custom'" class="custom-input">
-        <h3>選択肢を入力してください（改行で区切り）</h3>
-        <textarea 
-          v-model="customOptions" 
-          placeholder="例：&#10;映画を見る&#10;本を読む&#10;散歩する&#10;料理する"
-          rows="4"
-        ></textarea>
+        <h3>新しい選択肢を追加</h3>
+        <div class="add-option">
+          <input 
+            type="text" 
+            v-model="newOption" 
+            @keyup.enter="addOption"
+            placeholder="例：新しい選択肢"
+          >
+          <button @click="addOption">追加</button>
+        </div>
+        <ul class="options-list">
+          <li v-for="(option, index) in customOptions" :key="index">
+            <span>{{ option }}</span>
+            <button @click="removeOption(index)" class="remove-btn">×</button>
+          </li>
+        </ul>
+        <p v-if="customOptions.length === 0" class="no-options">選択肢を追加してください。</p>
       </div>
       
       <button 
@@ -54,7 +65,8 @@ export default {
   data() {
     return {
       selectedCategory: null,
-      customOptions: '',
+      newOption: '',
+      customOptions: [],
       result: '',
       resultIcon: '',
       resultMessage: '',
@@ -196,24 +208,32 @@ export default {
       this.resultIcon = '⚡'
     },
     decideCustom() {
-      const options = this.customOptions.split('\n').filter(option => option.trim())
-      if (options.length === 0) {
+      if (this.customOptions.length === 0) {
         this.result = 'エラー'
-        this.resultMessage = '選択肢を入力してください！'
+        this.resultMessage = '選択肢を追加してください！'
         this.resultIcon = '❗'
         return
       }
-      const choice = this.getRandomItem(options)
+      const choice = this.getRandomItem(this.customOptions)
       this.result = choice
       this.resultMessage = `運命の選択は「${choice}」です！`
       this.resultIcon = '🎲'
+    },
+    addOption() {
+      if (this.newOption.trim() !== '') {
+        this.customOptions.push(this.newOption.trim())
+        this.newOption = ''
+      }
+    },
+    removeOption(index) {
+      this.customOptions.splice(index, 1)
     },
     getRandomItem(array) {
       return array[Math.floor(Math.random() * array.length)]
     },
     reset() {
       this.selectedCategory = null
-      this.customOptions = ''
+      this.customOptions = []
       this.result = ''
       this.showResult = false
     }
@@ -307,6 +327,74 @@ export default {
   color: #333;
   font-size: 1em;
   resize: vertical;
+}
+
+.add-option {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.add-option input {
+  flex-grow: 1;
+  max-width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 1em;
+}
+
+.add-option button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #FFD700;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.add-option button:hover {
+  background: #FFA500;
+}
+
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 20px;
+  max-width: 400px;
+  max-height: 150px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.options-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  padding: 8px 15px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.no-options {
+  opacity: 0.7;
 }
 
 .decision-button {
