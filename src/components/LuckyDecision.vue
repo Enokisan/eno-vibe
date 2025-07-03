@@ -108,6 +108,12 @@ export default {
           name: 'カスタム選択',
           icon: '🎲',
           description: '自分で選択肢を決めて運に任せる'
+        },
+        {
+          id: 'lucky-number',
+          name: 'ラッキーナンバー',
+          icon: '🔢',
+          description: '今日のラッキーナンバーを引く'
         }
       ],
       fortunes: [
@@ -172,6 +178,9 @@ export default {
         case 'custom':
           this.decideCustom()
           break
+        case 'lucky-number':
+          this.decideLuckyNumber()
+          break
       }
       
       this.isDeciding = false
@@ -218,6 +227,12 @@ export default {
       this.result = choice
       this.resultMessage = `運命の選択は「${choice}」です！`
       this.resultIcon = '🎲'
+    },
+    decideLuckyNumber() {
+      const number = Math.floor(Math.random() * 100) + 1
+      this.result = number
+      this.resultMessage = `今日のあなたのラッキーナンバーは「${number}」です！`
+      this.resultIcon = '🔢'
     },
     addOption() {
       if (this.newOption.trim() !== '') {
